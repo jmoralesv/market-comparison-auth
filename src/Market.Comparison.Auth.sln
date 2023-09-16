@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.7.34031.279
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Market.Comparison.Auth", "Market.Comparison.Auth\Market.Comparison.Auth.csproj", "{81BBEF93-50A9-4763-B88B-75AAB94739D5}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{81BBEF93-50A9-4763-B88B-75AAB94739D5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{81BBEF93-50A9-4763-B88B-75AAB94739D5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{81BBEF93-50A9-4763-B88B-75AAB94739D5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{81BBEF93-50A9-4763-B88B-75AAB94739D5}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {69B3A3E8-2235-43D1-B130-2EE38409F7A4}
+	EndGlobalSection
+EndGlobal
