@@ -1,5 +1,5 @@
 # Introduction
-This repo contains the code of the Auth API of the Market Comparison platform.
+This repo contains the code of the Auth API of the Market Comparison platform. This project uses Duende Identity Server on top of an ASP.NET Core web application, which uses Razor Pages for some of the views.
 
 # Build
 To start reviewing and/or developing in this repo, it is necessary to have:
