@@ -1,17 +1,28 @@
 ﻿using Duende.IdentityServer;
 using Duende.IdentityServer.Models;
+using IdentityModel;
 
 namespace Market.Comparison.Auth;
 
 public static class Config
 {
     private const string MarketComparisonApiScope = "Market.Comparison.Api";
+    private const string VerificationIdentityResource = "verification";
 
     public static IEnumerable<IdentityResource> IdentityResources =>
         new List<IdentityResource>
         {
             new IdentityResources.OpenId(),
             new IdentityResources.Profile(),
+            new IdentityResource()
+            {
+                Name = VerificationIdentityResource,
+                UserClaims = new List<string>
+                {
+                    JwtClaimTypes.Email,
+                    JwtClaimTypes.EmailVerified
+                }
+            }
         };
 
     public static IEnumerable<ApiScope> ApiScopes =>
@@ -50,7 +61,8 @@ public static class Config
                 AllowedScopes = new List<string>
                 {
                     IdentityServerConstants.StandardScopes.OpenId,
-                    IdentityServerConstants.StandardScopes.Profile
+                    IdentityServerConstants.StandardScopes.Profile,
+                    VerificationIdentityResource,
                 }
             }
         };
