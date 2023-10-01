@@ -33,12 +33,12 @@ public class Index : PageModel
         _logger = logger;
     }
 
-    public ViewModel View { get; set; }
+    public ViewModel? View { get; set; }
 
     [BindProperty]
-    public InputModel Input { get; set; }
+    public InputModel Input { get; set; } = default!;
 
-    public async Task<IActionResult> OnGet(string userCode)
+    public async Task<IActionResult> OnGetAsync(string userCode)
     {
         if (string.IsNullOrWhiteSpace(userCode))
         {
@@ -69,7 +69,7 @@ public class Index : PageModel
         var request = await _interaction.GetAuthorizationContextAsync(Input.UserCode);
         if (request == null) return RedirectToPage("/Home/Error/Index");
 
-        ConsentResponse grantedConsent = null;
+        ConsentResponse? grantedConsent = null;
 
         // user clicked 'no' - send back the standard 'access_denied' response
         if (Input.Button == "no")
@@ -116,10 +116,10 @@ public class Index : PageModel
 
         if (grantedConsent != null)
         {
-            // communicate outcome of consent back to identityserver
+            // communicate outcome of consent back to identity server
             await _interaction.HandleRequestAsync(Input.UserCode, grantedConsent);
 
-            // indicate that's it ok to redirect back to authorization endpoint
+            // indicate that's it OK to redirect back to authorization endpoint
             return RedirectToPage("/Device/Success");
         }
 
@@ -128,7 +128,7 @@ public class Index : PageModel
         return Page();
     }
 
-    private async Task<ViewModel> BuildViewModelAsync(string userCode, InputModel model = null)
+    private async Task<ViewModel?> BuildViewModelAsync(string userCode, InputModel? model = null)
     {
         var request = await _interaction.GetAuthorizationContextAsync(userCode);
         if (request != null)
@@ -139,17 +139,19 @@ public class Index : PageModel
         return null;
     }
 
-    private ViewModel CreateConsentViewModel(InputModel model, DeviceFlowAuthorizationRequest request)
+    private ViewModel CreateConsentViewModel(InputModel? model, DeviceFlowAuthorizationRequest request)
     {
         var vm = new ViewModel
         {
             ClientName = request.Client.ClientName ?? request.Client.ClientId,
             ClientUrl = request.Client.ClientUri,
             ClientLogoUrl = request.Client.LogoUri,
-            AllowRememberConsent = request.Client.AllowRememberConsent
+            AllowRememberConsent = request.Client.AllowRememberConsent,
+            IdentityScopes = request.ValidatedResources.Resources.IdentityResources
+                .Select(x => CreateScopeViewModel(x,
+                    model == null || model.ScopesConsented?.Contains(x.Name) == true))
+                .ToArray()
         };
-
-        vm.IdentityScopes = request.ValidatedResources.Resources.IdentityResources.Select(x => CreateScopeViewModel(x, model == null || model.ScopesConsented?.Contains(x.Name) == true)).ToArray();
 
         var apiScopes = new List<ScopeViewModel>();
         foreach (var parsedScope in request.ValidatedResources.ParsedScopes)
@@ -170,7 +172,7 @@ public class Index : PageModel
         return vm;
     }
 
-    private ScopeViewModel CreateScopeViewModel(IdentityResource identity, bool check)
+    private static ScopeViewModel CreateScopeViewModel(IdentityResource identity, bool check)
     {
         return new ScopeViewModel
         {
@@ -197,7 +199,7 @@ public class Index : PageModel
         };
     }
 
-    private ScopeViewModel GetOfflineAccessScope(bool check)
+    private static ScopeViewModel GetOfflineAccessScope(bool check)
     {
         return new ScopeViewModel
         {

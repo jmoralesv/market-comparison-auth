@@ -29,9 +29,9 @@ public class Index : PageModel
         _events = events;
     }
 
-    public ViewModel View { get; set; }
+    public ViewModel View { get; set; } = new();
 
-    public async Task OnGet()
+    public async Task OnGetAsync()
     {
         var grants = await _interaction.GetAllUserGrantsAsync();
 
@@ -68,7 +68,7 @@ public class Index : PageModel
 
     [BindProperty]
     [Required]
-    public string ClientId { get; set; }
+    public string ClientId { get; set; } = default!;
 
     public async Task<IActionResult> OnPostAsync()
     {
