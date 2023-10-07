@@ -58,11 +58,14 @@ public static class Config
                 // where to redirect to after logout
                 PostLogoutRedirectUris = { "https://localhost:7102/signout-callback-oidc" },
 
+                AllowOfflineAccess = true,
+
                 AllowedScopes = new List<string>
                 {
                     IdentityServerConstants.StandardScopes.OpenId,
                     IdentityServerConstants.StandardScopes.Profile,
                     VerificationIdentityResource,
+                    MarketComparisonApiScope,
                 }
             }
         };
