@@ -9,9 +9,9 @@ using IdentityModel;
 
 namespace Market.Comparison.Auth;
 
-public class TestUsers
+internal class TestUsers
 {
-    public static List<TestUser> Users
+    internal static List<TestUser> Users
     {
         get
         {

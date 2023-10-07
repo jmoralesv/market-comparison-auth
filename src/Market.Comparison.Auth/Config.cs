@@ -4,12 +4,12 @@ using IdentityModel;
 
 namespace Market.Comparison.Auth;
 
-public static class Config
+internal static class Config
 {
     private const string MarketComparisonApiScope = "Market.Comparison.Api";
     private const string VerificationIdentityResource = "verification";
 
-    public static IEnumerable<IdentityResource> IdentityResources =>
+    internal static IEnumerable<IdentityResource> IdentityResources =>
         new List<IdentityResource>
         {
             new IdentityResources.OpenId(),
@@ -25,13 +25,13 @@ public static class Config
             }
         };
 
-    public static IEnumerable<ApiScope> ApiScopes =>
+    internal static IEnumerable<ApiScope> ApiScopes =>
         new List<ApiScope>
         {
             new ApiScope(MarketComparisonApiScope, "Market Comparison API")
         };
 
-    public static IEnumerable<Client> Clients =>
+    internal static IEnumerable<Client> Clients =>
         new List<Client>
         {
             new Client
