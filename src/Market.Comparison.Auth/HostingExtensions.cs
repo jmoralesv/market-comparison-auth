@@ -6,7 +6,7 @@ namespace Market.Comparison.Auth;
 
 internal static class HostingExtensions
 {
-    public static WebApplication ConfigureServices(this WebApplicationBuilder builder)
+    internal static WebApplication ConfigureServices(this WebApplicationBuilder builder)
     {
         builder.Services.AddRazorPages();
 
@@ -45,7 +45,7 @@ internal static class HostingExtensions
         return builder.Build();
     }
 
-    public static WebApplication ConfigurePipeline(this WebApplication app)
+    internal static WebApplication ConfigurePipeline(this WebApplication app)
     {
         if (app.Environment.IsDevelopment())
         {
