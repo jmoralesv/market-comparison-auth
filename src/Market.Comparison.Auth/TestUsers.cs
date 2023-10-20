@@ -9,7 +9,7 @@ using IdentityModel;
 
 namespace Market.Comparison.Auth;
 
-internal class TestUsers
+internal sealed class TestUsers
 {
     internal static List<TestUser> Users
     {
