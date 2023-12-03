@@ -5,9 +5,18 @@ name: Build Market.Comparison.Auth
 
 on:
   push:
-    branches: [ "main" ]
+    branches:
+      - "**"
   pull_request:
     branches: [ "main" ]
+
+env:
+  webProject: '**/Market.Comparison.Auth.csproj'
+  webProjectPath: '' # will be set in a later step
+  projects: |
+    ${{ env.webProject }}
+  testProjects: '**/*[Tt]ests/*.csproj'
+  buildConfiguration: ${{ github.ref == 'refs/heads/main' && 'Release' || 'Debug' }}
 
 jobs:
   build-market-comparison-auth:
@@ -15,17 +24,44 @@ jobs:
     runs-on: ubuntu-latest
     defaults:
       run:
-        working-directory: "src/Market.Comparison.Auth"
+        working-directory: "src"
 
     steps:
     - uses: actions/checkout@v3
-    - name: Setup .NET
+      with:
+        fetch-depth: 0 # Disable shallow fetch to get the full history of the repository
+
+    - name: Setup Git Version
+      uses: GitTools/actions/gitversion/setup@v0.9.10
+      with:
+        versionSpec: '5.x'
+
+    - name: Execute Git Version
+      uses: GitTools/actions/gitversion/execute@v0.9.10
+      with:
+        updateAssemblyInfo: false
+        useConfigFile: true
+        configFilePath: '../.github/workflows/GitVersion.yml'
+
+    - name: Find web project's' physical path
+      run: |
+        $webProjectPath = Get-ChildItem -Path . -Filter Market.Comparison.Auth.csproj -Recurse | Select-Object -First 1 -ExpandProperty FullName
+        Write-Host "webProjectPath value -> $webProjectPath"
+        echo "webProjectPath=$webProjectPath" >> $GITHUB_ENV
+      shell: pwsh
+
+    - name: Use .NET 8 SDK
       uses: actions/setup-dotnet@v3
       with:
         dotnet-version: 8.x
-    - name: Restore dependencies
-      run: dotnet restore
+
+    - name: Restore
+      run: dotnet restore ${{ env.projects }} ${{ env.testProjects }} --verbosity Minimal
+
     - name: Build
-      run: dotnet build --no-restore
+      run: dotnet build ${{ env.projects }} ${{ env.testProjects }} --configuration ${{ env.buildConfiguration }} --no-restore /p:Version=${{ env.GitVersion.SemVer }} /p:PublicRelease=true /p:RunAnalyzersDuringBuild=true
+
     - name: Test
-      run: dotnet test --no-build --verbosity normal
+      run: dotnet test ${{ env.testProjects }} --configuration ${{ env.buildConfiguration }} --no-restore --no-build /p:CollectCoverage=true /p:CoverletOutputFormat=cobertura
+      env:
+        TRX_FILE_NAME: 'Market.Comparison.Auth Test Run from build pipeline'
