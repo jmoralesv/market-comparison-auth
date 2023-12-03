@@ -55,3 +55,22 @@ jobs:
 
     - name: Build web project
       run: dotnet build ${{ env.webProject }} --configuration ${{ env.buildConfiguration }} --no-restore /p:Version=${{ env.GitVersion_SemVer }} /p:PublicRelease=true /p:RunAnalyzersDuringBuild=true
+
+    - name: Install EF Core Tools
+      run: dotnet tool install --global dotnet-ef
+
+    - name: Generate migration script for CustomConfigurationDbContext
+      run: dotnet ef migrations script --project ${{ env.webProjectPath }} --startup-project ${{ env.webProjectPath }} --output migrations/CustomConfigurationDbContext.sql --context CustomConfigurationDbContext --verbose --configuration ${{ env.buildConfiguration }} --no-build --idempotent
+
+    - name: Print CustomConfigurationDbContext.sql contents
+      run: |
+        path=$(find . -name "CustomConfigurationDbContext.sql" -print -quit)
+        cat $path
+
+    - name: Generate migration script for PersistedGrantDbContext
+      run: dotnet ef migrations script --project ${{ env.webProjectPath }} --startup-project ${{ env.webProjectPath }} --output migrations/PersistedGrantDbContext.sql --context PersistedGrantDbContext --verbose --configuration ${{ env.buildConfiguration }} --no-build --idempotent
+
+    - name: Print PersistedGrantDbContext.sql contents
+      run: |
+        path=$(find . -name "PersistedGrantDbContext.sql" -print -quit)
+        cat $path
