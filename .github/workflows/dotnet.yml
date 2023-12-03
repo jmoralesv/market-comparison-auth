@@ -45,9 +45,6 @@ jobs:
         echo "webProjectPath value -> $path"
         echo "webProjectPath=$path" >> $GITHUB_ENV
 
-    - name: Print variable
-      run: echo $webProjectPath
-
     - name: Use .NET 8 SDK
       uses: actions/setup-dotnet@v3
       with:
@@ -57,4 +54,4 @@ jobs:
       run: dotnet restore ${{ env.webProject }} --verbosity Minimal
 
     - name: Build web project
-      run: dotnet build ${{ env.webProject }} --configuration ${{ env.buildConfiguration }} --no-restore /p:Version=${{ env.semVer }} /p:PublicRelease=true /p:RunAnalyzersDuringBuild=true
+      run: dotnet build ${{ env.webProject }} --configuration ${{ env.buildConfiguration }} --no-restore /p:Version=${{ env.GitVersion_SemVer }} /p:PublicRelease=true /p:RunAnalyzersDuringBuild=true
