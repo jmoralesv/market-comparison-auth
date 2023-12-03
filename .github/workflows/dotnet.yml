@@ -43,21 +43,30 @@ jobs:
 
     - name: Find web project's' physical path
       run: |
-        $webProjectPath = Get-ChildItem -Path . -Filter Market.Comparison.Auth.csproj -Recurse | Select-Object -First 1 -ExpandProperty FullName
-        Write-Host "webProjectPath value -> $webProjectPath"
-        echo "webProjectPath=$webProjectPath" >> $GITHUB_ENV
+        $path = Get-ChildItem -Path . -Filter Market.Comparison.Auth.csproj -Recurse | Select-Object -First 1 -ExpandProperty FullName
+        Write-Host "webProjectPath value -> $path"
+        echo "webProjectPath=$path" >> $GITHUB_ENV
       shell: pwsh
+
+    - name: Print variable
+      run: echo $webProjectPath
 
     - name: Use .NET 8 SDK
       uses: actions/setup-dotnet@v3
       with:
         dotnet-version: 8.x
 
-    - name: Restore
-      run: dotnet restore ${{ env.webProject }} ${{ env.testProjects }} --verbosity Minimal
+    - name: Restore web project
+      run: dotnet restore ${{ env.webProject }} --verbosity Minimal
 
-    - name: Build
-      run: dotnet build ${{ env.webProject }} ${{ env.testProjects }} --configuration ${{ env.buildConfiguration }} --no-restore /p:Version=${{ env.GitVersion.SemVer }} /p:PublicRelease=true /p:RunAnalyzersDuringBuild=true
+    - name: Restore test project
+      run: dotnet restore ${{ env.testProjects }} --verbosity Minimal
+
+    - name: Build web project
+      run: dotnet build ${{ env.webProject }} --configuration ${{ env.buildConfiguration }} --no-restore /p:Version=${{ env.GitVersion.SemVer }} /p:PublicRelease=true /p:RunAnalyzersDuringBuild=true
+
+    - name: Build test project
+      run: dotnet build ${{ env.testProjects }} --configuration ${{ env.buildConfiguration }} --no-restore /p:Version=${{ env.GitVersion.SemVer }} /p:PublicRelease=true /p:RunAnalyzersDuringBuild=true
 
     - name: Test
       run: dotnet test ${{ env.testProjects }} --configuration ${{ env.buildConfiguration }} --no-restore --no-build /p:CollectCoverage=true /p:CoverletOutputFormat=cobertura
