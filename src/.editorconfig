@@ -30,8 +30,8 @@ tab_width = 2
 indent_size = 2
 tab_width = 2
 
-# JSON files
-[*.json]
+# JSON and YAML files
+[*.{json,yml,yaml}]
 indent_size = 2
 tab_width = 2
 
@@ -153,7 +153,7 @@ dotnet_diagnostic.CA1853.severity = warning # CA1853: Unnecessary call to 'Dicti
 dotnet_diagnostic.CA1854.severity = warning # CA1854: Prefer the IDictionary.TryGetValue(TKey, out TValue) method
 dotnet_diagnostic.CA1859.severity = warning # CA1859: Use concrete types when possible for improved performance
 dotnet_diagnostic.CA1860.severity = warning # CA1860: Avoid using 'Enumerable.Any()' extension method
-dotnet_diagnostic.CA1861.severity = warning # CA1861: Avoid constant arrays as arguments
+dotnet_diagnostic.CA1861.severity = suggestion # CA1861: Avoid constant arrays as arguments
 dotnet_diagnostic.CA1864.severity = warning # CA1864: Prefer the 'IDictionary.TryAdd(TKey, TValue)' method
 dotnet_diagnostic.CA1865.severity = warning # CA1865-CA1867: Use 'string.Method(char)' instead of 'string.Method(string)' for string with single char
 dotnet_diagnostic.CA1866.severity = warning # CA1865-CA1867: Use 'string.Method(char)' instead of 'string.Method(string)' for string with single char
@@ -229,7 +229,7 @@ csharp_new_line_before_catch                          = true
 csharp_new_line_before_finally                        = true
 csharp_new_line_before_members_in_object_initializers = true
 csharp_new_line_before_members_in_anonymous_types     = true
-csharp_new_line_between_query_expression_clauses      = TryGetValue
+csharp_new_line_between_query_expression_clauses      = true
 
 csharp_indent_labels = one_less_than_current
 csharp_prefer_braces = true:silent
