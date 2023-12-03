@@ -41,10 +41,9 @@ jobs:
 
     - name: Find web project's' physical path
       run: |
-        $path = Get-ChildItem -Path . -Filter Market.Comparison.Auth.csproj -Recurse | Select-Object -First 1 -ExpandProperty FullName
-        Write-Host "webProjectPath value -> $path"
+        path=$(find . -name "Market.Comparison.Auth.csproj" -print -quit)
+        echo "webProjectPath value -> $path"
         echo "webProjectPath=$path" >> $GITHUB_ENV
-      shell: pwsh
 
     - name: Print variable
       run: echo $webProjectPath
@@ -58,4 +57,4 @@ jobs:
       run: dotnet restore ${{ env.webProject }} --verbosity Minimal
 
     - name: Build web project
-      run: dotnet build ${{ env.webProject }} --configuration ${{ env.buildConfiguration }} --no-restore /p:Version=${{ env.GitVersion.SemVer }} /p:PublicRelease=true /p:RunAnalyzersDuringBuild=true
+      run: dotnet build ${{ env.webProject }} --configuration ${{ env.buildConfiguration }} --no-restore /p:Version=${{ env.semVer }} /p:PublicRelease=true /p:RunAnalyzersDuringBuild=true
