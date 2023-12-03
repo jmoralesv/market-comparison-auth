@@ -22,7 +22,7 @@ jobs:
     runs-on: ubuntu-latest
     defaults:
       run:
-        working-directory: "src"
+        working-directory: src
 
     steps:
     - uses: actions/checkout@v3
@@ -30,16 +30,16 @@ jobs:
         fetch-depth: 0 # Disable shallow fetch to get the full history of the repository
 
     - name: Setup Git Version
-      uses: GitTools/actions/gitversion/setup@v0.9.10
+      uses: GitTools/actions/gitversion/setup@v0.10.2
       with:
         versionSpec: '5.x'
 
     - name: Execute Git Version
-      uses: GitTools/actions/gitversion/execute@v0.9.10
+      uses: GitTools/actions/gitversion/execute@v0.10.2
       with:
         updateAssemblyInfo: false
         useConfigFile: true
-        configFilePath: '../.github/GitVersion.yml'
+        configFilePath: '.github/GitVersion.yml'
 
     - name: Find web project's' physical path
       run: |
