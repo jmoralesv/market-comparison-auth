@@ -1,5 +1,5 @@
 ﻿using Duende.IdentityServer;
-using Market.Comparison.Auth.Data;
+using Market.Comparison.Auth.Data.Contexts;
 using Microsoft.AspNetCore.Authentication.Google;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
@@ -10,13 +10,13 @@ internal static class HostingExtensions
 {
     internal static WebApplication ConfigureServices(this WebApplicationBuilder builder)
     {
-        var migrationsAssembly = typeof(Hello).Assembly.GetName().Name;
+        var migrationsAssembly = typeof(CustomConfigurationDbContext).Assembly.GetName().Name;
         var connectionString = builder.Configuration.GetConnectionString("AuthConnection");
 
         builder.Services.AddRazorPages();
 
         builder.Services.AddIdentityServer()
-            .AddConfigurationStore(options =>
+            .AddConfigurationStore<CustomConfigurationDbContext>(options =>
             {
                 options.ConfigureDbContext = b => b.UseSqlServer(connectionString,
                     sql => sql.MigrationsAssembly(migrationsAssembly));

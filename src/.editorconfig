@@ -132,6 +132,10 @@ dotnet_diagnostic.RS2008.severity = none # RS2008: Enable analyzer release track
 dotnet_diagnostic.CA1502.severity = warning # CA1502: Avoid excessive complexity
 dotnet_diagnostic.CA1505.severity = warning # CA1505: Avoid unmaintainable code
 dotnet_diagnostic.CA1507.severity = warning # CA1507: Use nameof in place of string
+dotnet_diagnostic.CA1510.severity = warning # CA1510: Use ArgumentNullException throw helper
+dotnet_diagnostic.CA1511.severity = warning # CA1511: Use ArgumentException throw helper
+dotnet_diagnostic.CA1512.severity = warning # CA1512: Use ArgumentOutOfRangeException throw helper
+dotnet_diagnostic.CA1513.severity = warning # CA1513: Use ObjectDisposedException throw helper
 
 # Performance rules
 dotnet_diagnostic.CA1805.severity = warning # CA1805: Do not initialize unnecessarily
@@ -183,7 +187,7 @@ dotnet_diagnostic.CA2251.severity = warning # CA2251: Use String.Equals over Str
 dotnet_diagnostic.CA2254.severity = warning # CA2254: Template should be a static expression
 
 # Language and unnecessary code rules
-dotnet_diagnostic.IDE0058.severity = suggestion # Remove unnecessary expression value (IDE0058)
+dotnet_diagnostic.IDE0058.severity = silent # Remove unnecessary expression value (IDE0058)
 dotnet_diagnostic.IDE0004.severity = warning # Remove unnecessary cast (IDE0004)
 dotnet_diagnostic.IDE0005.severity = warning # Remove unnecessary using directives (IDE0005)
 dotnet_diagnostic.IDE0035.severity = error # Remove unreachable code (IDE0035)
