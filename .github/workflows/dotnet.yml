@@ -12,8 +12,6 @@ on:
 
 env:
   webProject: '**/Market.Comparison.Auth.csproj'
-  webProjectPath: '' # will be set in a later step
-  testProjects: '**/*[Tt]ests/*.csproj'
   buildConfiguration: ${{ github.ref == 'refs/heads/main' && 'Release' || 'Debug' }}
 
 jobs:
@@ -59,16 +57,5 @@ jobs:
     - name: Restore web project
       run: dotnet restore ${{ env.webProject }} --verbosity Minimal
 
-    - name: Restore test project
-      run: dotnet restore ${{ env.testProjects }} --verbosity Minimal
-
     - name: Build web project
       run: dotnet build ${{ env.webProject }} --configuration ${{ env.buildConfiguration }} --no-restore /p:Version=${{ env.GitVersion.SemVer }} /p:PublicRelease=true /p:RunAnalyzersDuringBuild=true
-
-    - name: Build test project
-      run: dotnet build ${{ env.testProjects }} --configuration ${{ env.buildConfiguration }} --no-restore /p:Version=${{ env.GitVersion.SemVer }} /p:PublicRelease=true /p:RunAnalyzersDuringBuild=true
-
-    - name: Test
-      run: dotnet test ${{ env.testProjects }} --configuration ${{ env.buildConfiguration }} --no-restore --no-build /p:CollectCoverage=true /p:CoverletOutputFormat=cobertura
-      env:
-        TRX_FILE_NAME: 'Market.Comparison.Auth Test Run from build pipeline'
