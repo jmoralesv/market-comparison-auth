@@ -2,7 +2,7 @@
 using Duende.IdentityServer.Models;
 using IdentityModel;
 
-namespace Market.Comparison.Auth;
+namespace Market.Comparison.Auth.Data.DataLoading;
 
 internal static class Config
 {
@@ -14,7 +14,7 @@ internal static class Config
         {
             new IdentityResources.OpenId(),
             new IdentityResources.Profile(),
-            new IdentityResource()
+            new()
             {
                 Name = VerificationIdentityResource,
                 UserClaims = new List<string>
@@ -28,13 +28,13 @@ internal static class Config
     internal static IEnumerable<ApiScope> ApiScopes =>
         new List<ApiScope>
         {
-            new ApiScope(MarketComparisonApiScope, "Market Comparison API")
+            new(MarketComparisonApiScope, "Market Comparison API")
         };
 
     internal static IEnumerable<Client> Clients =>
         new List<Client>
         {
-            new Client
+            new()
             {
                 ClientId = "client",
                 AllowedGrantTypes = GrantTypes.ClientCredentials,// no interactive user, use the clientid/secret for authentication
@@ -45,7 +45,7 @@ internal static class Config
                 AllowedScopes = { MarketComparisonApiScope }// scopes that client has access to
             },
             // interactive ASP.NET Core Web App
-            new Client
+            new()
             {
                 ClientId = "web",
                 ClientSecrets = { new Secret("secret".Sha256()) },

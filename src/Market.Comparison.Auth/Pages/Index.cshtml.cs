@@ -7,7 +7,7 @@ namespace Market.Comparison.Auth.Pages;
 [AllowAnonymous]
 public class Index : PageModel
 {
-    public string? Version;
+    public string? Version { get; set; }
 
     public void OnGet()
     {

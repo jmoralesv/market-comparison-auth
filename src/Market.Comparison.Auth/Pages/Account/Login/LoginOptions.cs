@@ -1,6 +1,6 @@
 namespace Market.Comparison.Auth.Pages.Account.Login;
 
-public class LoginOptions
+public static class LoginOptions
 {
     public static bool AllowLocalLogin => true;
     public static bool AllowRememberLogin => true;

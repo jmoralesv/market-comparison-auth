@@ -1,0 +1,13 @@
+In Visual Studio, using the Package Manager Console:
+
+For adding new migrations related to the Identity Server context:
+    Add-Migration InitialConfigurationDbSetup -Context CustomConfigurationDbContext -OutputDir Migrations\IdentityServer\ConfigurationDb -Project "Market.Comparison.Auth.Data" -StartupProject "Market.Comparison.Auth"
+
+    Add-Migration InitialPersistedGrantDbSetup -Context PersistedGrantDbContext -OutputDir Migrations\IdentityServer\PersistedGrantDb -Project "Market.Comparison.Auth.Data" -StartupProject "Market.Comparison.Auth"
+
+For updating the databases:
+    Update-Database -Context CustomConfigurationDbContext
+    Update-Database -Context PersistedGrantDbContext
+
+For removing the last migration:
+    Remove-Migration -Context PersistedGrantDbContext -Project "Market.Comparison.Auth.Data" -StartupProject "Market.Comparison.Auth"
