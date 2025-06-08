@@ -3,7 +3,6 @@ using Duende.IdentityServer;
 using Duende.IdentityServer.Events;
 using Duende.IdentityServer.Services;
 using Duende.IdentityServer.Test;
-using IdentityModel;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -55,9 +54,9 @@ public class Callback : PageModel
         // try to determine the unique id of the external user (issued by the provider)
         // the most common claim type for that are the sub claim and the NameIdentifier
         // depending on the external provider, some other claim type might be used
-        var userIdClaim = externalUser?.FindFirst(JwtClaimTypes.Subject) ??
+        var userIdClaim = externalUser?.FindFirst(Duende.IdentityModel.JwtClaimTypes.Subject) ??
                           externalUser?.FindFirst(ClaimTypes.NameIdentifier) ??
-                          throw new Exception("Unknown userid");
+                          throw new Exception("Unknown user-id");
 
         var provider = result.Properties?.Items["scheme"];
         var providerUserId = userIdClaim.Value;
@@ -73,7 +72,7 @@ public class Callback : PageModel
             // remove the user id claim so we don't include it as an extra claim if/when we provision the user
             var claims = externalUser.Claims.ToList();
             claims.Remove(userIdClaim);
-            user = _users.AutoProvisionUser(provider, providerUserId, claims.ToList());
+            user = _users.AutoProvisionUser(provider, providerUserId, claims);
         }
 
         // this allows us to collect any additional claims or properties
@@ -122,17 +121,17 @@ public class Callback : PageModel
     {
         // if the external system sent a session id claim, copy it over
         // so we can use it for single sign-out
-        var sid = externalResult.Principal?.Claims.FirstOrDefault(x => x.Type == JwtClaimTypes.SessionId);
+        var sid = externalResult.Principal?.Claims.FirstOrDefault(x => x.Type == Duende.IdentityModel.JwtClaimTypes.SessionId);
         if (sid != null)
         {
-            localClaims.Add(new Claim(JwtClaimTypes.SessionId, sid.Value));
+            localClaims.Add(new Claim(Duende.IdentityModel.JwtClaimTypes.SessionId, sid.Value));
         }
 
         // if the external provider issued an id_token, we'll keep it for sign-out
         var idToken = externalResult.Properties?.GetTokenValue("id_token");
         if (idToken != null)
         {
-            localSignInProps.StoreTokens(new[] { new AuthenticationToken { Name = "id_token", Value = idToken } });
+            localSignInProps.StoreTokens([new AuthenticationToken { Name = "id_token", Value = idToken }]);
         }
     }
 }

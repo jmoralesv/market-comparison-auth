@@ -9,6 +9,9 @@ internal static class DataLoadingExtensions
 {
     internal static void Seed(this ModelBuilder modelBuilder)
     {
+        // This is used to ensure that, in any future migration, the created date of initial data is not updated
+        var initialDateTime = new DateTime(2023, 12, 3, 5, 14, 6, 262, DateTimeKind.Utc).AddTicks(6230);
+
         var clientGrantTypes = new List<ClientGrantType>();
         var clientSecrets = new List<ClientSecret>();
         var clientScopes = new List<ClientScope>();
@@ -21,6 +24,7 @@ internal static class DataLoadingExtensions
             .Select((item, i) =>
             {
                 item.Id = i + 1;
+                item.Created = initialDateTime;
 
                 if (item.AllowedGrantTypes.Count != 0)
                 {
@@ -34,7 +38,7 @@ internal static class DataLoadingExtensions
                 if (item.ClientSecrets.Count != 0)
                 {
                     item.ClientSecrets = item.ClientSecrets
-                        .Select(cs => { cs.ClientId = item.Id; return cs; })
+                        .Select(cs => { cs.ClientId = item.Id; cs.Created = initialDateTime; return cs; })
                         .ToList();
 
                     clientSecrets.AddRange(item.ClientSecrets);
@@ -102,6 +106,7 @@ internal static class DataLoadingExtensions
             .Select((item, i) =>
             {
                 item.Id = i + 1;
+                item.Created = initialDateTime;
 
                 if (item.UserClaims.Count != 0)
                 {
@@ -124,7 +129,7 @@ internal static class DataLoadingExtensions
 
         var scopes = Config.ApiScopes
             .Select(x => x.ToEntity())
-            .Select((item, i) => { item.Id = i + 1; return item; })
+            .Select((item, i) => { item.Id = i + 1; item.Created = initialDateTime; return item; })
             .ToList();
 
         modelBuilder.Entity<Client>().HasData(clients);
