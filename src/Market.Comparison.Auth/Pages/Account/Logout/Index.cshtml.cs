@@ -1,7 +1,6 @@
 using Duende.IdentityServer.Events;
 using Duende.IdentityServer.Extensions;
 using Duende.IdentityServer.Services;
-using IdentityModel;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -72,7 +71,7 @@ public class Index : PageModel
             await _events.RaiseAsync(new UserLogoutSuccessEvent(User.GetSubjectId(), User.GetDisplayName()));
 
             // see if we need to trigger federated logout
-            var idp = User.FindFirst(JwtClaimTypes.IdentityProvider)?.Value;
+            var idp = User.FindFirst(Duende.IdentityModel.JwtClaimTypes.IdentityProvider)?.Value;
 
             // if it's a local login we can ignore this workflow
             if (idp != null && idp != Duende.IdentityServer.IdentityServerConstants.LocalIdentityProvider)

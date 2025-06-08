@@ -3,7 +3,6 @@
 
 using System.Text;
 using System.Text.Json;
-using IdentityModel;
 using Microsoft.AspNetCore.Authentication;
 
 namespace Market.Comparison.Auth.Pages.Diagnostics;
@@ -17,7 +16,7 @@ public class ViewModel
         if (result.Properties?.Items.ContainsKey("client_list") ?? false)
         {
             var encoded = result.Properties.Items["client_list"];
-            var bytes = Base64Url.Decode(encoded!);
+            var bytes = Duende.IdentityModel.Base64Url.Decode(encoded!);
             var value = Encoding.UTF8.GetString(bytes);
 
             Clients = JsonSerializer.Deserialize<string[]>(value)!;

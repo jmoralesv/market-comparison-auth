@@ -3,9 +3,9 @@
 
 using System.Security.Claims;
 using System.Text.Json;
+using Duende.IdentityModel;
 using Duende.IdentityServer;
 using Duende.IdentityServer.Test;
-using IdentityModel;
 
 namespace Market.Comparison.Auth;
 
@@ -23,8 +23,8 @@ internal sealed class TestUsers
                 country = "Germany"
             };
 
-            return new List<TestUser>
-            {
+            return
+            [
                 new TestUser
                 {
                     SubjectId = "1",
@@ -57,7 +57,7 @@ internal sealed class TestUsers
                         new Claim(JwtClaimTypes.Address, JsonSerializer.Serialize(address), IdentityServerConstants.ClaimValueTypes.Json)
                     }
                 }
-            };
+            ];
         }
     }
 }

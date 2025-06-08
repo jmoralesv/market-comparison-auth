@@ -3,7 +3,6 @@ using Duende.IdentityServer.Extensions;
 using Duende.IdentityServer.Models;
 using Duende.IdentityServer.Services;
 using Duende.IdentityServer.Validation;
-using IdentityModel;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
@@ -132,7 +131,7 @@ public class Index : PageModel
         return null;
     }
 
-    private ViewModel CreateConsentViewModel(InputModel? model, AuthorizationRequest request)
+    private static ViewModel CreateConsentViewModel(InputModel? model, AuthorizationRequest request)
     {
         var vm = new ViewModel
         {
@@ -146,7 +145,7 @@ public class Index : PageModel
                 .ToArray()
         };
 
-        var resourceIndicators = request.Parameters.GetValues(OidcConstants.AuthorizeRequest.Resource) ?? Enumerable.Empty<string>();
+        var resourceIndicators = request.Parameters.GetValues(Duende.IdentityModel.OidcConstants.AuthorizeRequest.Resource) ?? Enumerable.Empty<string>();
         var apiResources = request.ValidatedResources.Resources.ApiResources.Where(x => resourceIndicators.Contains(x.Name));
 
         var apiScopes = new List<ScopeViewModel>();
@@ -189,7 +188,7 @@ public class Index : PageModel
         };
     }
 
-    public ScopeViewModel CreateScopeViewModel(ParsedScopeValue parsedScopeValue, ApiScope apiScope, bool check)
+    private static ScopeViewModel CreateScopeViewModel(ParsedScopeValue parsedScopeValue, ApiScope apiScope, bool check)
     {
         var displayName = apiScope.DisplayName ?? apiScope.Name;
         if (!string.IsNullOrWhiteSpace(parsedScopeValue.ParsedParameter))

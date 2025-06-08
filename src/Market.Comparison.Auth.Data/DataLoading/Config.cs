@@ -1,6 +1,6 @@
-﻿using Duende.IdentityServer;
+﻿using Duende.IdentityModel;
+using Duende.IdentityServer;
 using Duende.IdentityServer.Models;
-using IdentityModel;
 
 namespace Market.Comparison.Auth.Data.DataLoading;
 
@@ -10,30 +10,27 @@ internal static class Config
     private const string VerificationIdentityResource = "verification";
 
     internal static IEnumerable<IdentityResource> IdentityResources =>
-        new List<IdentityResource>
-        {
+        [
             new IdentityResources.OpenId(),
             new IdentityResources.Profile(),
             new()
             {
                 Name = VerificationIdentityResource,
-                UserClaims = new List<string>
-                {
+                UserClaims =
+                [
                     JwtClaimTypes.Email,
                     JwtClaimTypes.EmailVerified
-                }
+                ]
             }
-        };
+        ];
 
     internal static IEnumerable<ApiScope> ApiScopes =>
-        new List<ApiScope>
-        {
+        [
             new(MarketComparisonApiScope, "Market Comparison API")
-        };
+        ];
 
     internal static IEnumerable<Client> Clients =>
-        new List<Client>
-        {
+        [
             new()
             {
                 ClientId = "client",
@@ -60,13 +57,13 @@ internal static class Config
 
                 AllowOfflineAccess = true,
 
-                AllowedScopes = new List<string>
-                {
+                AllowedScopes =
+                [
                     IdentityServerConstants.StandardScopes.OpenId,
                     IdentityServerConstants.StandardScopes.Profile,
                     VerificationIdentityResource,
                     MarketComparisonApiScope,
-                }
+                ]
             }
-        };
+        ];
 }
