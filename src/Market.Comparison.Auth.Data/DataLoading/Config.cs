@@ -34,7 +34,7 @@ internal static class Config
             new()
             {
                 ClientId = "client",
-                AllowedGrantTypes = GrantTypes.ClientCredentials,// no interactive user, use the clientid/secret for authentication
+                AllowedGrantTypes = GrantTypes.ClientCredentials,// no interactive user, use the client id/secret for authentication
                 ClientSecrets =
                 {
                     new Secret("secret".Sha256())// secret for authentication
