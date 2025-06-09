@@ -4,8 +4,8 @@ This repo contains the code of the Auth API of the Market Comparison platform. T
 # Build
 To start reviewing and/or developing in this repo, it is necessary to have:
 1. Visual Studio 2022 or Visual Studio Code
-2. .NET 8 SDK
-3. Git
+2. .NET 9 SDK
+3. GitHub
 4. Azure SQL
 5. Azure Application Insights
 
